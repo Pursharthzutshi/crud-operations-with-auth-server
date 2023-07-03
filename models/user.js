@@ -1,0 +1,42 @@
+const mongoose = require("mongoose")
+
+const userInfo = new mongoose.Schema({ 
+    firstName:{
+    type:String,
+    required:true,
+},
+lastName:{
+    type:String,
+    required:true,
+},
+age:{
+    type:Number,
+    required:true,
+}
+})
+
+const signUpDetails = new mongoose.Schema({
+    emailId:{
+        type:String,
+        required:true,
+    },
+    username:{
+        type:String,
+        required:true,
+    },
+    password:{
+        type:String,
+        required:true,
+    },
+   
+})
+
+
+const userInfoTable = mongoose.model("userInfo",userInfo,"userInfo")
+const signUpDetailsTable = mongoose.model("signUpDetails",signUpDetails,"signUpDetails")
+
+
+module.exports = {
+    userInfoTable,
+    signUpDetailsTable
+}

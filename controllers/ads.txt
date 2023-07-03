@@ -1,0 +1,125 @@
+const userInfo = require("../models/user").userInfoTable
+const signUpDetails = require("../models/user").signUpDetailsTable
+
+// const session = require("express-session")
+// const cookie = require("cookie")
+
+// router.use(session({
+//     secret: 'logInSession',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: true }
+//   }))
+
+// create Sign Up Table
+
+async function signUpTable(req,res){
+    await signUpDetails()
+    res.send("sign up table created")
+}
+
+
+
+async function createTable(req,res){
+    await userInfo()
+    res.send("Table created")
+}
+
+//sign up details table
+
+async function logIn(req,res){
+    const loggedInEmailId = req.body.loggedInEmailId
+    const loggedInPassword = req.body.loggedInPassword
+
+    console.log(loggedInEmailId)
+    console.log(loggedInPassword)
+
+    const logInUserDetails = await signUpDetails.find({loggedInEmailId:loggedInEmailId,loggedInPassword:loggedInPassword})
+
+    res.send(logInUserDetails);
+
+}
+
+//create
+
+async function Create(req,res){
+
+    const firstName = req.body.firstName
+    const lastName = req.body.lastName
+    const age = req.body.age
+
+    console.log(firstName)
+    console.log(lastName)
+    console.log(age)
+
+    const data = await userInfo.insertMany({firstName:firstName,lastName:lastName,age:age})
+    res.send(data)
+}
+
+
+
+//read
+
+async function Read(req,res){
+
+    const userData = await userInfo.find()
+    res.send(userData)
+}
+
+//update
+
+async function UpdateFirstName(req,res){
+
+    const id = req.params.id
+    
+    const updatedFirstName = req.body.updatedFirstName
+
+    console.log(id)
+    console.log(updatedFirstName)
+    await userInfo.updateOne({_id:id},{$set:{firstName:updatedFirstName}})
+    res.send("Table created")
+}
+
+
+async function UpdateLastName(req,res){
+
+    const id = req.params.id
+    const updatedLastName = req.body.updatedLastName
+
+    console.log(updatedLastName)
+    await userInfo.updateOne({_id:id},{$set:{lastName:updatedLastName}})
+    res.send("Table created")
+}
+
+
+async function UpdateAge(req,res){
+
+    const id = req.params.id
+    const updatedAge = req.body.updatedAge
+
+    console.log(updatedAge)
+    await userInfo.updateOne({_id:id},{$set:{age:updatedAge}})
+    res.send("Table created")
+}
+
+//delete
+
+async function Delete(req,res){
+    
+    const id = req.params.id
+
+    await userInfo.deleteOne({_id:id})
+    res.send("Table created")
+}
+
+module.exports ={
+    createTable,
+    Create,
+    Read,
+    UpdateFirstName,
+    UpdateLastName,
+    UpdateAge,
+    Delete,
+    signUpTable,
+    logIn
+} 
